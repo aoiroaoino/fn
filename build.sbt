@@ -4,6 +4,7 @@ ThisBuild / scalaVersion := "2.13.1"
 
 scalacOptions ++= Seq(
   "-feature",
-  "-duprecation",
-  "-Xlanguage:higherKinds"
+  "-language:higherKinds"
 )
+
+libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.1" % Test
