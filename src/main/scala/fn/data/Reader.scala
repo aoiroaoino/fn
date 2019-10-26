@@ -1,4 +1,5 @@
-package fn.data
+package fn
+package data
 
 final case class Reader[R, A](run: R => A) {
 
@@ -11,4 +12,12 @@ final case class Reader[R, A](run: R => A) {
 
 object Reader {
   def pure[R, A](a: A): Reader[R, A] = Reader(_ => a)
+
+  implicit def readerInstances[R]: Monad[({ type F[A] = Reader[R, A]})#F] =
+    new Monad[({ type F[A] = Reader[R, A]})#F] {
+      override def flatMap[A, B](fa: Reader[R, A])(f: A => Reader[R, B]): Reader[R, B] =
+        fa.flatMap(f)
+      override def pure[A](a: A): Reader[R, A] =
+        Reader.pure(a)
+    }
 }
